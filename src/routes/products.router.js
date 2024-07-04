@@ -4,7 +4,7 @@ import ProductManager from '../Class/productManager.js';
 
 const router = Router();
 
-const productManager = new ProductManager(__dirname + '/data/product.json');
+const productManager = new ProductManager(__dirname + '/data/products.json');
 
 router.use((req, res, next) => {
     // Verificamos que exista el archivo Json sino lo inicializamos
