@@ -1,0 +1,5 @@
+# Ignorar la carpeta de node_modules
+node_modules/
+
+src/data/*.json
+src/public/img/*
