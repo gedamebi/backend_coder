@@ -57,7 +57,7 @@ router.put('/:pid', async (req, res) => {
     try {
         const retorno = await productManager.updateProduct(pid, req.body);
         if (retorno){
-            res.status(201).json({ resultado: 'Producto modificado correctamente' })
+            res.status(200).json({ resultado: 'Producto modificado correctamente' })
         } else {
             res.status(404).json({ resultado: 'Producto no encontrado' })
         }       
@@ -88,14 +88,14 @@ router.get('/', async (req, res) => {
     if (limit) {
         productList = productList.slice(0, parseInt(limit));
     }
-    res.status(201).json({ resultado: productList })
+    res.status(200).json({ resultado: productList })
 });
 
 // Devuelvo un producto con ID especifico
 router.get('/:pid', async (req, res) => {
     const { pid } = req.params;
     const product = await productManager.getProductById(pid);   
-    res.status(201).json({ resultado: product })
+    res.status(200).json({ resultado: product })
 });
 
 export default router;
