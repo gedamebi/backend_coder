@@ -59,7 +59,7 @@ router.put('/:pid', async (req, res) => {
         if (retorno){
             res.status(201).json({ resultado: 'Producto modificado correctamente' })
         } else {
-            res.status(400).json({ resultado: 'Producto no encontrado' })
+            res.status(404).json({ resultado: 'Producto no encontrado' })
         }       
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -72,9 +72,9 @@ router.delete('/:pid', async (req, res) => {
     try {
         const retorno = await productManager.deleteProduct(pid);
         if (retorno){
-            res.status(201).json({ resultado: 'Producto eliminado correctamente' })
+            res.status(200).json({ resultado: 'Producto eliminado correctamente' })
         } else {
-            res.status(400).json({ resultado: 'Producto no encontrado' })
+            res.status(404).json({ resultado: 'Producto no encontrado' })
         }      
     } catch (error) {
         res.status(500).json({ message: error.message })
