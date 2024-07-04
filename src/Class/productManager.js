@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 class ProductManager {
+    
     constructor(path){
         this.path = path;
         this.productList = [];
