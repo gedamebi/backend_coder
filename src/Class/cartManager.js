@@ -57,7 +57,7 @@ export class CartManager {
             this.cartsList = [...cardsUpdated]
             await fs.promises.writeFile(this.path,JSON.stringify({ data: this.cartsList }))
         } catch (error) {
-            console.log(error);
+            throw new Error('Error al agregar producto al carrito');
         }
     }
 
