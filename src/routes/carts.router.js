@@ -4,7 +4,7 @@ import CartManager from '../Class/cartManager.js';
 
 const router = Router();
 
-const cartManager = new CartManager(__dirname + '/data/carts.json');
+const cartManager = new CartManager(__dirname + '/data/carrito.json');
 
 router.use((req, res, next) => {
     // Verificamos que exista el archivo Json sino lo inicializamos
