@@ -7,6 +7,7 @@ export class CartManager {
         this.cartsList = []
     }
 
+    // Funcio para verificar que exista el archivo JSON si no existe lo genero inciamente vacio
     async verificarFileJson(){
         if (!fs.existsSync(this.path)) {
             await fs.promises.writeFile(this.path, JSON.stringify({ data: [] }))
@@ -14,12 +15,14 @@ export class CartManager {
         }
     }
 
+    // Obtengo la lista de todos los carritos
     async getCartList(){
         const list = await fs.promises.readFile(this.path,'utf-8')
         this.cartsList = [...JSON.parse(list).data]
         return [...this.cartsList]
     }
 
+    // Creo un carrito con ID autogenerado y con productos inicialmente vacio
     async addCart(){
         try {
             const cart = {
@@ -35,6 +38,8 @@ export class CartManager {
         }
     }
 
+    // Agrego un producto al carrito
+    // Si ya existe produco agregado incremento en 1 el quantity
     async addProductToCard(id, productId){
         this.cartsList = await this.getCartList();
         try {
@@ -54,9 +59,9 @@ export class CartManager {
         } catch (error) {
             console.log(error);
         }
-        
     }
 
+    // Devuelvo los productos que tiene un Carrito con ID especifico
     async getProductsFromCart(id){
         await this.getCartList();
         const productListFiltrado = this.cartsList.find(carts => carts.id === id);

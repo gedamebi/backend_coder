@@ -1,10 +1,13 @@
 # Ignorar la carpeta de node_modules
 node_modules/
 
+# Ignorar archivos JSON dentro de src/data y cualquier archivo dentro de src/public/img
 src/data/*.json
 src/public/img/*
 
 # No ignorar las carpetas data, public e img
 !src/data/
+!src/data/.gitkeep
 !src/public/
 !src/public/img/
+!src/public/img/.gitkeep

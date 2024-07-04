@@ -1,5 +1,7 @@
 import express from 'express';
 import { __dirname } from './utils.js';
+
+// Defino los archivos que contiene las rutas
 import ProductsRoute from './routes/products.router.js';
 import CartsRoute from './routes/carts.router.js';
 
@@ -8,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
+// Creo las rutas
 app.use('/api/products/', ProductsRoute);
 app.use('/api/carts/', CartsRoute);
 

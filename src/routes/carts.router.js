@@ -1,17 +1,20 @@
 import { Router } from "express";
-import { __dirname, isNumeric, uploader } from '../utils.js';
+import { __dirname } from '../utils.js';
 import CartManager from '../Class/cartManager.js';
 
 const router = Router();
 
 const cartManager = new CartManager(__dirname + '/data/carrito.json');
 
+
+// Middleware que se ejecuta siempre previamente a la reques solicitada
 router.use((req, res, next) => {
     // Verificamos que exista el archivo Json sino lo inicializamos
     cartManager.verificarFileJson();
     next();
 });
 
+// Creo una instancia de carrito (inicialmente sin productos)
 router.post('/', async (req, res) => {
     try {
         const id = await cartManager.addCart();
@@ -20,12 +23,8 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 });
-
-//La ruta POST  /:cid/product/:pid deberá agregar el producto al arreglo “products” del carrito seleccionado, 
-//agregándose como un objeto bajo el siguiente formato:
-// -- product: SÓLO DEBE CONTENER EL ID DEL PRODUCTO (Es crucial que no agregues el producto completo)
-// -- quantity: debe contener el número de ejemplares de dicho producto. El producto, de momento, se agregará de uno en uno.
-// Además, si un producto ya existente intenta agregarse al producto, incrementar el campo quantity de dicho producto. 
+ 
+// Agrego productos al carrito
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;

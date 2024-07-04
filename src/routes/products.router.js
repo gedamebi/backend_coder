@@ -6,12 +6,14 @@ const router = Router();
 
 const productManager = new ProductManager(__dirname + '/data/productos.json');
 
+// Middleware que se ejecuta siempre previamente a la reques solicitada
 router.use((req, res, next) => {
     // Verificamos que exista el archivo Json sino lo inicializamos
     productManager.verificarFileJson();
     next();
 })
 
+// Creo un producto
 router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
 
     const dataProducto = req.body;
@@ -42,6 +44,7 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
     }
 });
 
+// Edito un producto
 router.put('/:pid', async (req, res) => {
     const { pid } = req.params;
 
@@ -63,6 +66,7 @@ router.put('/:pid', async (req, res) => {
     }
 });
 
+// Elimino producto
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
     try {
@@ -77,21 +81,20 @@ router.delete('/:pid', async (req, res) => {
     }
 });
 
+// Listo todos los productos
 router.get('/', async (req, res) => {
-    let productList = await productManager.getProductList();
-    
-    // Aplicar limitación si se proporciona el parámetro ?limit
+    let productList = await productManager.getProductList();  
     const limit = req.query.limit;
     if (limit) {
         productList = productList.slice(0, parseInt(limit));
     }
-
     res.status(201).json({ resultado: productList })
 });
 
-router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    const product = await productManager.getProductById(id);   
+// Devuelvo un producto con ID especifico
+router.get('/:pid', async (req, res) => {
+    const { pid } = req.params;
+    const product = await productManager.getProductById(pid);   
     res.status(201).json({ resultado: product })
 });
 

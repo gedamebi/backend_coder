@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
 })
 export const uploader = multer({ storage })
 
+// Funcion para verificar si un dato esta compuesto solo por numero y no caracteres 
 export function isNumeric(value) {
     return !isNaN(value) && !isNaN(parseFloat(value));
 }
