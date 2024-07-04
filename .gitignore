@@ -3,3 +3,8 @@ node_modules/
 
 src/data/*.json
 src/public/img/*
+
+# No ignorar las carpetas data, public e img
+!src/data/
+!src/public/
+!src/public/img/
