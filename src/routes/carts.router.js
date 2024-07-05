@@ -41,8 +41,11 @@ router.post('/:cid/product/:pid', async (req, res) => {
 router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
     const productsId = await cartManager.getProductsFromCart(cid);  
-
-    res.status(200).json({ products: productsId })
+    if (productsId == false){
+        res.status(400).json({ message: "Carrito no encontrado" })
+    } else {
+        res.status(200).json({ products: productsId })
+    }
 });
 
 export default router;

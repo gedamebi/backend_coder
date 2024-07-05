@@ -24,7 +24,11 @@ class ProductManager {
 
     async getProductById(id){
         await this.getProductList();
-        return this.productList.find(product => product.id === id);
+        const productEncontrado = this.productList.find(product => product.id === id);
+        if (productEncontrado == undefined){
+            return false;
+        }
+        return productEncontrado;
     }
 
     async addProduct(product){

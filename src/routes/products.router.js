@@ -95,7 +95,12 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     const { pid } = req.params;
     const product = await productManager.getProductById(pid);   
-    res.status(200).json({ resultado: product })
+    if (product == false){
+        res.status(400).json({ message: "Producto no encontrado" });
+    } else {
+        res.status(200).json({ resultado: product });
+    }
+    
 });
 
 export default router;

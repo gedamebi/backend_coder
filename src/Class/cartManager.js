@@ -65,6 +65,9 @@ export class CartManager {
     async getProductsFromCart(id){
         await this.getCartList();
         const productListFiltrado = this.cartsList.find(carts => carts.id === id);
+        if (productListFiltrado == undefined){
+            return false;
+        }
         return productListFiltrado.products;
     }
 }
