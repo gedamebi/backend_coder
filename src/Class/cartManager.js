@@ -43,6 +43,11 @@ export class CartManager {
     async addProductToCard(id, productId){
         this.cartsList = await this.getCartList();
         try {
+            // Verifico que exista el ID del carrito
+            const cartEncontrado = this.cartsList.find(cart => cart.id === id);
+            if (cartEncontrado == undefined){
+                return false;
+            }
             const cardsUpdated = this.cartsList.map((cart)=>{
                 if(cart.id !== id) return cart
                 
