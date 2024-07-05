@@ -43,7 +43,8 @@ export class CartManager {
     async addProductToCard(id, productId){
         this.cartsList = await this.getCartList();
         try {
-            // Verifico que exista el ID del carrito
+            // Verifico que exista el ID del carrito sino retorno false para indicar que no se encontro
+            // Por ahora no hay verificado del producto antes de agregarlos.
             const cartEncontrado = this.cartsList.find(cart => cart.id === id);
             if (cartEncontrado == undefined){
                 return false;
