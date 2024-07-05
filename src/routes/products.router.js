@@ -7,9 +7,9 @@ const router = Router();
 const productManager = new ProductManager(__dirname + '/data/productos.json');
 
 // Middleware que se ejecuta siempre previamente a la reques solicitada
-router.use((req, res, next) => {
+router.use(async (req, res, next) => {
     // Verificamos que exista el archivo Json sino lo inicializamos
-    productManager.verificarFileJson();
+    await productManager.verificarFileJson();
     next();
 })
 
