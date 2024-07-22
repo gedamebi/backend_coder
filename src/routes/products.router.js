@@ -6,32 +6,25 @@ const router = Router();
 
 const productManager = new ProductManager(__dirname + '/data/productos.json');
 
-// Middleware que se ejecuta siempre previamente a la reques solicitada
 router.use(async (req, res, next) => {
-    // Verificamos que exista el archivo Json sino lo inicializamos
     await productManager.verificarFileJson();
     next();
 })
 
-// Creo un producto
 router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
 
     const dataProducto = req.body;
-
     let thumbnails = []
     if (req.files){
-        thumbnails = req.files ? req.files.map(file => file.path) : [];
+        thumbnails = req.files ? req.files.map(file => 'img/' + file.filename) : [];
     }
     dataProducto.thumbnails = thumbnails;
       
-    // Desestructuro para validar datos
     const { title, description, code, price, stock, category } = dataProducto;
-    // Validación de campos obligatorios
     if (!title || !description || !code || !price || !stock || !category) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnails' });
     }
 
-    // Valido que los campos sean numericos
     if (!isNumeric(price) || !isNumeric(stock)){
         return res.status(400).json({ error: 'Datos numericos invalidos' });
     }
@@ -44,11 +37,9 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
     }
 });
 
-// Edito un producto
 router.put('/:pid', async (req, res) => {
-    const { pid } = req.params;
 
-    // Verifico que si actualizan stock y precio sean numericos
+    const { pid } = req.params;
     const { price, stock } = req.body;
     if ((price && !isNumeric(price)) || (stock && !isNumeric(stock))){
         return res.status(400).json({ error: 'Datos numericos invalidos' });
@@ -66,7 +57,6 @@ router.put('/:pid', async (req, res) => {
     }
 });
 
-// Elimino producto
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
     try {
@@ -81,7 +71,6 @@ router.delete('/:pid', async (req, res) => {
     }
 });
 
-// Listo todos los productos
 router.get('/', async (req, res) => {
     let productList = await productManager.getProductList();  
     const limit = req.query.limit;
@@ -91,7 +80,6 @@ router.get('/', async (req, res) => {
     res.status(200).json({ resultado: productList })
 });
 
-// Devuelvo un producto con ID especifico
 router.get('/:pid', async (req, res) => {
     const { pid } = req.params;
     const product = await productManager.getProductById(pid);   

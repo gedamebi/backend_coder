@@ -12,7 +12,6 @@ class ProductManager {
     async verificarFileJson(){
         if (!fs.existsSync(this.path)) {
             await fs.promises.writeFile(this.path, JSON.stringify({ data: [] }))
-            console.log('Archivo creado.');
         }
     }
 

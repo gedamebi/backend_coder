@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0; 
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #2A2A2A;
+    color: white;
+}
+
+.container-fluid {
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+.my-4 {
+    display: flex;
+    justify-content: center;
+}
+
+.card-img-top{
+    width: 100px;
+    height: auto;
+}
+
+.list-group-item {
+    padding: 0.2rem 1rem;
+}
+
+
+.chat-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    border-left: 1px solid #ddd;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+}
+.chat-header {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    background-color: #343a40;
+    color: white;
+}
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    color: black;
+}
+.chat-footer {
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #f1f1f1;
+}
+.chat-message {
+    margin-bottom: 1rem;
+}
+.chat-message.user {
+    text-align: right;
+}
+
+.bold_name{
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.mensaje_chat{
+    padding-left: 5px;
+    margin-bottom: 2px;
+}
+
+
+
+
+#formAddProductConteiner {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    padding: 0 20px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+#formAddProductConteiner.show {
+    display: block;
+    max-height: 500px;
+}
+#toggle-btnAdd {
+    cursor: pointer;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#formUpdateProductConteiner {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    padding: 0 20px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+#formUpdateProductConteiner.show {
+    display: block;
+    max-height: 500px;
+}
+#toggle-btnUpdate {
+    cursor: pointer;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#formDelProductConteiner {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    padding: 0 20px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+#formDelProductConteiner.show {
+    display: block;
+    max-height: 500px;
+}
+#toggle-btnDel {
+    cursor: pointer;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.btnSubmitForm{
+    margin-bottom: 20px;
+    margin-top: 10px;
+}

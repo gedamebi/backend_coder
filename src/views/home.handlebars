@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="my-4">Lista de Productos</h1>
+            <div class="row productList">
+                {{#each products}}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="/{{thumbnails.[0]}}" class="card-img" alt="{{title}}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{title}}</h5>
+                                    <p class="card-text">{{description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Código: {{code}}</li>
+                                        <li class="list-group-item">Precio: ${{price}}</li>
+                                        <li class="list-group-item">Stock: {{stock}}</li>
+                                        <li class="list-group-item">Categoría: {{category}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="chat-panel">
+                <div class="chat-header">
+                    Chat
+                </div>
+                <div class="chat-body">
+
+                </div>
+                <div class="chat-footer">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="button" id="btnLogin">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/chat.js"></script>
