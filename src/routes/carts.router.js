@@ -6,7 +6,6 @@ const router = Router();
 
 const cartManager = new CartManager(__dirname + '/data/carrito.json');
 
-
 router.use(async (req, res, next) => {
     await cartManager.verificarFileJson();
     next();

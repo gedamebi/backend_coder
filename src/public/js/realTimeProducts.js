@@ -57,7 +57,6 @@ addProductForm.addEventListener('submit', async (event) => {
 
     if (files.length > 0) {
         try {
-            // Convertir archivos a base64 usando async/await
             const filePromises = Array.from(files).map(async file => {
                 const base64Data = await convertBase64(file);
                 return {
@@ -124,7 +123,6 @@ socket.on('updateProducts', (data) => {
     const productList = document.querySelector(".row.listProducts");
     productList.innerHTML = '';
     data.products.forEach((product) => {
-        // Crear los elementos
         const colDiv = document.createElement('div');
         colDiv.className = 'col-md-4 mb-4';
 
@@ -138,7 +136,7 @@ socket.on('updateProducts', (data) => {
         colImgDiv.className = 'col-md-4';
 
         const img = document.createElement('img');
-        img.src = product.thumbnails[0]; // Reemplaza `/path/to/` con el camino real a la imagen
+        img.src = product.thumbnails[0];
         img.className = 'card-img';
         img.alt = product.title;
 
@@ -173,7 +171,6 @@ socket.on('updateProducts', (data) => {
             listGroup.appendChild(listItem);
         });
 
-        // Construir la estructura
         colImgDiv.appendChild(img);
         rowDiv.appendChild(colImgDiv);
 
@@ -224,7 +221,6 @@ socket.on('updateProducts', (data) => {
                 showConfirmButton: false,
                 timer: 1500
             });
-        }
-        
+        }   
     });
 });

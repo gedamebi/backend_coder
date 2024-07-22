@@ -116,8 +116,7 @@ socketServer.on('connection', (socket) => {
     
     socket.on('nuevoUsuario', (nuevoUsuario) => {
         usuarios.push(nuevoUsuario)
-        socket.emit('conversacion', conversacion);
-        socketServer.emit('conectados',usuarios);
+        socketServer.emit('conversacion', conversacion);
     })
 
     socket.on('desconectarUsuario', (user) => {

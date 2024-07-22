@@ -2,7 +2,7 @@ import multer from "multer";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url) // nos da la ruta desde donde se esta haciendo el import
+const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)
 
 const storage = multer.diskStorage({
@@ -14,8 +14,7 @@ const storage = multer.diskStorage({
     }
 })
 export const uploader = multer({ storage })
-
-// Funcion para verificar si un dato esta compuesto solo por numero y no caracteres 
+ 
 export function isNumeric(value) {
     return !isNaN(value) && !isNaN(parseFloat(value));
 }
