@@ -85,12 +85,30 @@ socketServer.on('connection', (socket) => {
     });
 
     socket.on('updateProduct', async ({id ,product}) => {
-        const result = await productManager.updateProduct(id, product);
-        socketServer.emit('updateProducts', { 
-            products : await productManager.getProductList(),
-            result : result,
-            metodo: 'editar'
-        });
+        let validacionResult = true;
+        const { title, description, code, price, stock, category } = product;
+        if (!title || !description || !code || !price || !stock || !category) {
+            validacionResult = false;
+        }
+
+        if (!isNumeric(price) || !isNumeric(stock)){
+            validacionResult = false
+        }
+
+        if (validacionResult){
+            const result = await productManager.updateProduct(id, product);
+            socketServer.emit('updateProducts', { 
+                products : await productManager.getProductList(),
+                result : result,
+                metodo: 'editar'
+            });
+        } else {
+            socketServer.emit('updateProducts', { 
+                products : await productManager.getProductList(),
+                result : false,
+                metodo: 'editar'
+            });
+        }
     });
 
     socket.on('deleteProduct', async (productId) => {

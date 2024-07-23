@@ -71,7 +71,7 @@
                         </div>
                         <div class="col">
                             <label for="inputEmail4" class="form-label">Precio del producto</label>
-                            <input type="number" class="form-control" id="priceProductEdit" placeholder="Precio del producto" required>
+                            <input type="number" step="0.01" class="form-control" id="priceProductEdit" placeholder="Precio del producto" required>
                         </div>
                     </div>
                     <div class="row">
@@ -101,7 +101,7 @@
                 </form>
             </div>
             
-            <h1 class="my-4">Lista de Productos</h1>
+            <h1 class="my-4">Lista de Productos RealTime</h1>
             <div class="row listProducts">
                 {{#each products}}
                 <div class="col-md-4 mb-4">
