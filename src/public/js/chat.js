@@ -6,8 +6,40 @@ const chatFooter = document.querySelector('.chat-footer');
 
 let user = '';
 
-btnLogin.addEventListener('click', function() {
-    Swal.fire({
+btnLogin.addEventListener('click', async function() {
+    const { value: nickname } = await Swal.fire({
+    title: "Ingrese nickname",
+    input: "text",
+    inputLabel: "Para ingresar al chat identificarse",
+    showCancelButton: true,
+    inputValidator: (value) => {
+        if (!value) {
+            return "You need to write something!";
+        }
+    }
+    });
+    if (nickname) {
+        user = nickname
+        txtHeader.innerText = 'Bienvenido ' + user
+        socket.emit('nuevoUsuario',{ user });
+        chatFooter.innerHTML = '';
+        const inputSendText = document.createElement('input');
+        inputSendText.type = 'text';
+        inputSendText.className = 'form-control';
+        inputSendText.placeholder = 'Escribe un mensaje...';
+        inputSendText.id = 'inputSendText';
+        chatFooter.appendChild(inputSendText);
+
+        inputSendText.addEventListener('keyup', function(event) {
+            if(event.key === 'Enter'){
+                socket.emit('mensaje',{ user, mensaje: event.target.value })
+                inputSendText.value = ''
+            }
+        });
+    }
+
+
+    /* Swal.fire({
         title:'Ingrese nickname',
         input: 'text',
         text: 'Para ingresar al chat identificarse',
@@ -33,7 +65,7 @@ btnLogin.addEventListener('click', function() {
                 inputSendText.value = ''
             }
         });
-    })
+    }) */
 });
 
 
