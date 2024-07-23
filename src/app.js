@@ -48,7 +48,7 @@ socketServer.on('connection', (socket) => {
         }
 
         if (!isNumeric(price) || !isNumeric(stock)){
-            validacionResult = false
+            validacionResult = false;
         }
 
         if (validacionResult){
@@ -92,7 +92,7 @@ socketServer.on('connection', (socket) => {
         }
 
         if (!isNumeric(price) || !isNumeric(stock)){
-            validacionResult = false
+            validacionResult = false;
         }
 
         if (validacionResult){
