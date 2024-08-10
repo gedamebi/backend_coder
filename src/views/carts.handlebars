@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <h1 class="my-4">Lista de Productos del Carrito</h1>
+    {{#each carts.products}}
+            <div class="divCartListProduct">
+                <p>Producto: {{product.title}}</p>
+                <p>Descripcion: {{product.description}}</p>
+                <p>Codigo:  {{product.code}}</p>
+                <p>Cantidad:  {{quantity}}</p>
+                <p>Precio Unit:  {{product.price}}</p>
+                <button class="btn btn-outline-danger" onclick={delProdToCarts(`{{product._id}}`)} type="button">Eliminar</button>
+            </div>
+    {{/each}}
+    <button class="btn btn-outline-primary btn-sm mt-2" onclick={volver()} type="button">Volver</button>
+</div>
+<script src="/js/carts.js"></script>

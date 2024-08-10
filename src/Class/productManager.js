@@ -35,6 +35,7 @@ class ProductManager {
             product.id = uuidv4(); // Generar un ID
             await this.getProductList();
             this.productList.push(product);
+
             await fs.promises.writeFile(this.path, JSON.stringify({ data: this.productList }))
             return true;
         } catch (error) {

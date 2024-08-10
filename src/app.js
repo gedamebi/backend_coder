@@ -9,14 +9,23 @@ import { Server } from 'socket.io';
 import ProductsRoute from './routes/products.router.js';
 import CartsRoute from './routes/carts.router.js';
 import ViewRouters from './routes/views.route.js';
+import mongoose from 'mongoose';
 
 
 import ProductManager from './Class/productManager.js';
 const productManager = new ProductManager(__dirname + '/data/productos.json');
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const app = express();
-app.engine('handlebars', handlebars.engine());
+app.engine('handlebars', handlebars.engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true, // Permite el acceso a propiedades del prototipo
+        allowProtoMethodsByDefault: true // Permite el acceso a métodos del prototipo
+    }
+}));
 app.set('views', __dirname + '/views');
 app.set('view engine','handlebars');
 
@@ -32,8 +41,8 @@ app.use('/api/carts/', CartsRoute);
 const conversacion = [];
 const usuarios = [];
 
-const httpServer = app.listen(8080, () => {
-    console.log("Servidor iniciado en puerto 8080");
+const httpServer = app.listen(process.env.PORT_EXPRESS, () => {
+    console.log("Servidor iniciado en puerto " + process.env.PORT_EXPRESS);
 })
 
 export const socketServer = new Server(httpServer);
@@ -144,3 +153,11 @@ socketServer.on('connection', (socket) => {
         }
     });
 });
+
+mongoose.connect(process.env.DATABASE_URL, { dbName: 'ecommerce' })
+    .then(() => {
+        console.log('Listo la base de datos')
+    })
+    .catch((e) =>{
+        console.log('Error al conectar a Mongo ' + e)
+    })

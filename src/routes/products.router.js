@@ -1,15 +1,18 @@
 import { Router } from "express";
 import { __dirname, isNumeric, uploader } from '../utils.js';
-import ProductManager from '../Class/productManager.js';
+//import ProductManager from '../Class/productManager.js';
+import { ProductModel } from "../model/product.model.js";
+
 
 const router = Router();
 
+/* 
 const productManager = new ProductManager(__dirname + '/data/productos.json');
-
 router.use(async (req, res, next) => {
     await productManager.verificarFileJson();
     next();
 })
+*/
 
 router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
 
@@ -18,8 +21,7 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
     if (req.files){
         thumbnails = req.files ? req.files.map(file => 'img/' + file.filename) : [];
     }
-    dataProducto.thumbnails = thumbnails;
-      
+
     const { title, description, code, price, stock, category } = dataProducto;
     if (!title || !description || !code || !price || !stock || !category) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnails' });
@@ -30,7 +32,16 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
     }
 
     try {
-        await productManager.addProduct(dataProducto);
+        // await productManager.addProduct(dataProducto);
+        await ProductModel.create({
+            title, 
+            description, 
+            code, 
+            price, 
+            stock, 
+            category, 
+            thumbnails
+        })
         res.status(201).json({ message: 'Producto agregado correctamente' })
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -40,18 +51,19 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
 router.put('/:pid', async (req, res) => {
 
     const { pid } = req.params;
-    const { price, stock } = req.body;
+    const productReq = req.body
+    const { price, stock } = productReq;
     if ((price && !isNumeric(price)) || (stock && !isNumeric(stock))){
         return res.status(400).json({ error: 'Datos numericos invalidos' });
     }
 
     try {
-        const retorno = await productManager.updateProduct(pid, req.body);
-        if (retorno){
-            res.status(200).json({ resultado: 'Producto modificado correctamente' })
-        } else {
-            res.status(404).json({ resultado: 'Producto no encontrado' })
-        }       
+        // const retorno = await productManager.updateProduct(pid, req.body);
+        const productUpdated = await ProductModel.findByIdAndUpdate(pid, {
+            ...productReq
+          }, { new: true });
+
+        res.status(200).json({ resultado: 'Producto modificado correctamente', payload: productUpdated })     
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -60,7 +72,8 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
     try {
-        const retorno = await productManager.deleteProduct(pid);
+        // const retorno = await productManager.deleteProduct(pid);
+        const retorno = await ProductModel.findByIdAndDelete(pid);
         if (retorno){
             res.status(200).json({ resultado: 'Producto eliminado correctamente' })
         } else {
@@ -72,23 +85,53 @@ router.delete('/:pid', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
+    /* 
     let productList = await productManager.getProductList();  
     const limit = req.query.limit;
     if (limit) {
         productList = productList.slice(0, parseInt(limit));
     }
     res.status(200).json({ resultado: productList })
+    */
+    const { limit = 10, page = 1, sort = '', query } = req.query;
+
+    const filter = {};
+    if (query) {
+        try {
+            Object.assign(filter, JSON.parse(query));
+        } catch (e) {
+            return res.status(400).send('El parámetro de consulta "query" no es válido.');
+        }
+    }
+
+    const sortManager = {
+        'asc': 1,
+        'dsc': -1
+    }
+
+    try {
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            ...(sort && { sort: { price: sortManager[sort]} }),
+            customLabels: { docs: 'payload' }
+        };
+        const resultado = await ProductModel.paginate(filter, options);
+        res.status(200).json({resultado, status: 'success'});
+    } catch (error) {
+        res.status(500).send({error: error.message, status: 'error'});
+    }
 });
 
 router.get('/:pid', async (req, res) => {
-    const { pid } = req.params;
-    const product = await productManager.getProductById(pid);   
+    const { pid } = req.params; 
+    // const product = await productManager.getProductById(pid);   
+    const product = await ProductModel.findById(pid); 
     if (product == false){
         res.status(404).json({ message: "Producto no encontrado" });
     } else {
         res.status(200).json({ resultado: product });
     }
-    
 });
 
 export default router;

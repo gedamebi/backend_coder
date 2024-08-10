@@ -2,30 +2,59 @@
     <div class="row">
         <div class="col-md-9">
             <h1 class="my-4">Lista de Productos</h1>
+            <div class="row">
+                <div class="col-md-5 mb-4">
+                    <select id="optionOrden" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Ordenar por precio:</option>
+                        <option value="1">Mayor a menor</option>
+                        <option value="2">Menor a mayor</option>
+                    </select>
+                </div>
+                <div class="col-md-5 mb-4">
+                    <button class="btn btn-outline-primary btn-sm" onclick={goToCart()} type="button">Ver Carrito</button>
+                </div>
+            </div>
+            
             <div class="row productList">
-                {{#each products}}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="/{{thumbnails.[0]}}" class="card-img" alt="{{title}}">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{title}}</h5>
-                                    <p class="card-text">{{description}}</p>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Código: {{code}}</li>
-                                        <li class="list-group-item">Precio: ${{price}}</li>
-                                        <li class="list-group-item">Stock: {{stock}}</li>
-                                        <li class="list-group-item">Categoría: {{category}}</li>
-                                    </ul>
+               {{#each products.payload}}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="/{{thumbnails.[0]}}" class="card-img" alt="{{title}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{title}}</h5>
+                                        <p class="card-text">{{description}}</p>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Código: {{code}}</li>
+                                            <li class="list-group-item">Precio: ${{price}}</li>
+                                            <li class="list-group-item">Stock: {{stock}}</li>
+                                            <li class="list-group-item">Categoría: {{category}}</li>
+                                        </ul>
+                                        <button class="btn btn-outline-primary btn-sm mt-2" onclick={addProduct(`{{this.id}}`)} type="button">Agregar a carrito</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {{else}}
+                    <p>No hay productos disponibles.</p>
                 {{/each}}
+                <div class="pieLista">
+                    <span>Total de productos: {{products.totalDocs}}</span>
+                </div>
+                <div class="pieLista">
+                    {{#if products.hasPrevPage}}
+                        <a class="btn btn-outline-primary btn-sm mt-2" href="?page={{products.prevPage}}">Página anterior</a>
+                    {{/if}}
+                    <span class="pageActual">{{products.page}}</span>
+                    {{#if products.hasNextPage}}
+                        <a class="btn btn-outline-primary btn-sm mt-2" href="?page={{products.nextPage}}">Página siguiente</a>
+                    {{/if}}
+                </div>
+                
             </div>
         </div>
         <div class="col-md-3">
@@ -47,3 +76,5 @@
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/chat.js"></script>
+<script src="js/products.js"></script>
+<script src="js/carts.js"></script>
