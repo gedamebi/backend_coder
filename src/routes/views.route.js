@@ -9,8 +9,6 @@ const router = Router();
 const productManager = new ProductManager(__dirname + '/data/productos.json');
 
 router.get('/', async (req, res) => {
-    //await productManager.verificarFileJson();
-    //const products = await productManager.getProductList();
     const page = parseInt(req.query.page, 10) || 1;
 
     const sort = req.query.sort;

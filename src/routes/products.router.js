@@ -1,18 +1,9 @@
 import { Router } from "express";
 import { __dirname, isNumeric, uploader } from '../utils.js';
-//import ProductManager from '../Class/productManager.js';
 import { ProductModel } from "../model/product.model.js";
 
 
 const router = Router();
-
-/* 
-const productManager = new ProductManager(__dirname + '/data/productos.json');
-router.use(async (req, res, next) => {
-    await productManager.verificarFileJson();
-    next();
-})
-*/
 
 router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
 
@@ -32,7 +23,6 @@ router.post('/', uploader.array("thumbnails", 10), async (req, res) => {
     }
 
     try {
-        // await productManager.addProduct(dataProducto);
         await ProductModel.create({
             title, 
             description, 
@@ -58,7 +48,6 @@ router.put('/:pid', async (req, res) => {
     }
 
     try {
-        // const retorno = await productManager.updateProduct(pid, req.body);
         const productUpdated = await ProductModel.findByIdAndUpdate(pid, {
             ...productReq
           }, { new: true });
@@ -72,7 +61,6 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
     try {
-        // const retorno = await productManager.deleteProduct(pid);
         const retorno = await ProductModel.findByIdAndDelete(pid);
         if (retorno){
             res.status(200).json({ resultado: 'Producto eliminado correctamente' })
@@ -85,14 +73,6 @@ router.delete('/:pid', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    /* 
-    let productList = await productManager.getProductList();  
-    const limit = req.query.limit;
-    if (limit) {
-        productList = productList.slice(0, parseInt(limit));
-    }
-    res.status(200).json({ resultado: productList })
-    */
     const { limit = 10, page = 1, sort = '', query } = req.query;
 
     const filter = {};
@@ -124,8 +104,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:pid', async (req, res) => {
-    const { pid } = req.params; 
-    // const product = await productManager.getProductById(pid);   
+    const { pid } = req.params;  
     const product = await ProductModel.findById(pid); 
     if (product == false){
         res.status(404).json({ message: "Producto no encontrado" });

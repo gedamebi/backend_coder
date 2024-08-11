@@ -22,8 +22,8 @@ dotenv.config();
 const app = express();
 app.engine('handlebars', handlebars.engine({
     runtimeOptions: {
-        allowProtoPropertiesByDefault: true, // Permite el acceso a propiedades del prototipo
-        allowProtoMethodsByDefault: true // Permite el acceso a métodos del prototipo
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true
     }
 }));
 app.set('views', __dirname + '/views');
@@ -129,11 +129,6 @@ socketServer.on('connection', (socket) => {
         });
     });
 
-
-
-
-
-    
     socket.on('mensaje',(data) => {
         const fechaHoraFormateada = moment().format('HH:mm DD/MM/YY');
         data.date = fechaHoraFormateada;
