@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { __dirname } from '../utils.js';
 import { CartsModel } from "../model/carts.model.js";
+import { ObjectId } from 'mongodb';
 
 const router = Router();
 
@@ -51,10 +52,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
 
-        const cartFinded = await CartsModel.findById(cid);
-        if(cartFinded == false){
-            res.status(404).json({ message: 'Carrito no encontrado' });
-        }
+        const cartFinded = await CartsModel.findById(cid); 
     
         const indexProd = cartFinded.products.findIndex(prod => prod.product.toString() === pid);
         if(indexProd === -1){
@@ -76,40 +74,49 @@ router.put('/:cid/product/:pid', async (req, res) => {
 router.delete('/:cid', async (req, res) => {
     const { cid } = req.params;
 
-    const cartFinded = await CartsModel.findById(cid).lean();
-    if(cartFinded == false) {
-        res.status(404).json({ message: 'Carrito no encontrado' });
-    }
+    try {
+        const cartFinded = await CartsModel.findById(cid).lean();
 
-    const newCart = {
-        ...cartFinded,
-        products: []
-    }
-    const cartUpdated = await CartsModel.findByIdAndUpdate(cid,newCart, {
-        new: true,
-    })
+        const newCart = {
+            ...cartFinded,
+            products: []
+        }
 
-    res.status(201).json({ message: 'Carrito viciado correctamente', cart: cartUpdated})
+        const cartUpdated = await CartsModel.findByIdAndUpdate(cid,newCart, {
+            new: true,
+        })
+
+        res.status(201).json({ message: 'Carrito vaciado correctamente', cart: cartUpdated})
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 });
 
 router.delete('/:cid/product/:pid', async (req, res) => {
     const { cid, pid } = req.params;
 
-    const cartFinded = await CartsModel.findById(cid).lean();
-    if(cartFinded == false) {
-        res.status(404).json({ message: 'Carrito no encontrado' });
+    try {
+        const cartFinded = await CartsModel.findById(cid).lean();
+
+        const idToFind = new ObjectId(pid);
+        const exists = cartFinded.products.some(item => item.product.equals(idToFind));
+        if(exists == false){
+            res.status(404).json({ message: 'Producto no existe en el carrito solicitado' });
+        } else {
+            const cartFiltered = {
+                ...cartFinded,
+                products:  cartFinded.products.filter(prod => prod.product.toString() !== pid)
+            }
+    
+            const cartUpdated = await CartsModel.findByIdAndUpdate(cid,cartFiltered, {
+                new: true,
+            }).populate('products.product')
+    
+            res.status(201).json({ message: 'Producto eliminado del carrito correctamente', cart: cartUpdated});
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-
-    const cartFiltered = {
-        ...cartFinded,
-        products:  cartFinded.products.filter(prod => prod.product.toString() !== pid)
-    }
-
-    const cartUpdated = await CartsModel.findByIdAndUpdate(cid,cartFiltered, {
-        new: true,
-    }).populate('products.product')
-
-    res.status(201).json({ message: 'Producto eliminado del carrito correctamente', cart: cartUpdated})
 });
 
 

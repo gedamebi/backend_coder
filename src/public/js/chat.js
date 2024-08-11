@@ -37,35 +37,6 @@ btnLogin.addEventListener('click', async function() {
             }
         });
     }
-
-
-    /* Swal.fire({
-        title:'Ingrese nickname',
-        input: 'text',
-        text: 'Para ingresar al chat identificarse',
-        allowOutsideClick: false,
-        inputValidator: (value) => {
-            return !value && 'Ingrese un nombre'
-        }
-    }).then((result)=>{
-        user = result.value
-        txtHeader.innerText = 'Bienvenido ' + user
-        socket.emit('nuevoUsuario',{ user });
-        chatFooter.innerHTML = '';
-        const inputSendText = document.createElement('input');
-        inputSendText.type = 'text';
-        inputSendText.className = 'form-control';
-        inputSendText.placeholder = 'Escribe un mensaje...';
-        inputSendText.id = 'inputSendText';
-        chatFooter.appendChild(inputSendText);
-
-        inputSendText.addEventListener('keyup', function(event) {
-            if(event.key === 'Enter'){
-                socket.emit('mensaje',{ user, mensaje: event.target.value })
-                inputSendText.value = ''
-            }
-        });
-    }) */
 });
 
 
