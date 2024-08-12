@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
             customLabels: { docs: 'payload' }
         };
         const products = await ProductModel.paginate({}, options);
-        res.render('home', { products, titulo : "Home" });
+        res.render('index', { products, titulo : "Home" });
     } catch (error) {
         res.status(500).send({error: error.message, status: 'error'});
     }
